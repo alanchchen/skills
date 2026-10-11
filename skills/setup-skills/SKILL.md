@@ -21,8 +21,8 @@ Read whatever exists:
 - `git remote -v` — GitHub, GitLab (`gitlab.com` or a self-hosted host), or no remote
 - `openspec/` at the repo root, and whether `openspec --version` runs
 - whether `gh` or `glab` runs and is authenticated (`gh auth status`, `glab auth status`)
-- `AGENTS.md` and `CLAUDE.md` at the repo root, and any existing `## Agent skills` block in either
-- `.agents/workflow/plan-store.md`, `.agents/workflow/issue-tracker.md`, `.agents/workflow/worktree.md` — prior output of this skill (everything else under `.agents/` belongs to other tools)
+- `AGENTS.md` and `CLAUDE.md` at the repo root, and whether either already points at `.agents/workflow/README.md`
+- `.agents/workflow/` — prior output of this skill (everything else under `.agents/` belongs to other tools)
 - worktree tooling: scripts or hooks whose name mentions `worktree` (e.g. `.claude/hooks/`, `scripts/`), a `WorktreeCreate` hook in `.claude/settings.json`, a `.worktreeinclude`
 
 ## 2. Ask, one section at a time
@@ -41,7 +41,7 @@ With no remote and no `openspec/`, there is no store to offer: tell the user to 
 
 ## 3. Confirm
 
-Show drafts of every file you will write and the `## Agent skills` block. Let the user edit before writing.
+Show drafts of every file you will write and the pointer line. Let the user edit before writing.
 
 ## 4. Write
 
@@ -51,28 +51,26 @@ Seed `.agents/workflow/` from the templates in this folder, filling in the repo-
 - `.agents/workflow/issue-tracker.md` from [issue-tracker-github.md](./issue-tracker-github.md) or [issue-tracker-gitlab.md](./issue-tracker-gitlab.md)
 - `.agents/workflow/worktree.md` from [worktree.md](./worktree.md) — only when section C ran and the user chose the repo's tooling
 
-The `## Agent skills` block goes in `AGENTS.md`, which every agent reads. If `AGENTS.md` is missing, create it. If `CLAUDE.md` exists and does not already import `AGENTS.md`, add an `@AGENTS.md` line to it. Update an existing block in place, leaving the surrounding sections untouched.
+Then write `.agents/workflow/README.md`, the index — one line per file written:
 
 ```markdown
-## Agent skills
+# Workflow
 
-### Plan store
+How this repo keeps Plans, tracks issues, and creates worktrees. Written by `setup-skills`; edit freely.
 
-[one line: where Plans live]. See `.agents/workflow/plan-store.md`.
-
-### Issue tracker
-
-[one line: where bugs and requests live]. See `.agents/workflow/issue-tracker.md`.
-
-### Worktree
-
-[one line: how worktrees are created]. See `.agents/workflow/worktree.md`.
+- [plan-store.md](./plan-store.md) — [one line: where Plans live]
+- [issue-tracker.md](./issue-tracker.md) — [one line: where bugs and requests live]
+- [worktree.md](./worktree.md) — [one line: how worktrees are created]
 ```
 
-Include `### Worktree` only when `.agents/workflow/worktree.md` was written.
+Finally add the pointer line, once, to the repo's agent instructions file — `AGENTS.md` if it exists, else `CLAUDE.md` if it exists, else a new `AGENTS.md`. When a pointer to `.agents/workflow/README.md` is already there, leave it.
+
+```markdown
+Before planning, implementing, or filing issues, read `.agents/workflow/README.md` — where this repo keeps Plans, tracks issues, and creates worktrees.
+```
 
 ## 5. Done
 
-Done when every file from step 4 exists and the block points at each of them. Tell the user which files were written, that the planning and implement skills now read them, and that `.agents/workflow/*.md` can be edited directly — re-run this skill only to switch a store or tracker.
+Done when every file from step 4 exists, the README lists each of them, and the pointer line is in place. Tell the user which files were written, that the planning and implement skills now read them, and that `.agents/workflow/*.md` can be edited directly — re-run this skill only to switch a store or tracker.
 
 Ask the user to commit `.agents/workflow/` along with the edited `AGENTS.md` / `CLAUDE.md`. Implement runs in a fresh worktree, which holds only committed files — uncommitted configuration is invisible there, and implement stops for missing setup.
