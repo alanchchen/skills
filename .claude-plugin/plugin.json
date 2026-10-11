@@ -1,0 +1,13 @@
+{
+  "name": "alanchchen-skills",
+  "version": "0.1.0",
+  "description": "Development skills from idea to commit — planning into a Plan store, implementing it slice by slice.",
+  "author": {
+    "name": "Alan Chen"
+  },
+  "repository": "https://github.com/alanchchen/skills",
+  "license": "MIT",
+  "skills": [
+    "./skills/setup-skills"
+  ]
+}
