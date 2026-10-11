@@ -1,6 +1,6 @@
 # Plan store 與 Issue tracker 分開，由 Setup 寫入設定
 
-每個 repo 由 Setup 分別設定 Plan store（OpenSpec、GitHub、GitLab）與 Issue tracker（GitHub、GitLab），寫入 `.agents/`。其他 skills 只讀設定、只描述動作；缺設定時停下，請使用者先跑 Setup。之所以分開，是因為 openspec 適合存放 Plan，卻不適合追蹤 bug，一個 repo 常常是 Plan 用 openspec、bug 用 GitHub issues。
+每個 repo 由 Setup 分別設定 Plan store（OpenSpec、GitHub、GitLab）與 Issue tracker（GitHub、GitLab），寫入 `.agents/workflow/`。其他 skills 只讀設定、只描述動作；缺設定時停下，請使用者先跑 Setup。之所以分開，是因為 openspec 適合存放 Plan，卻不適合追蹤 bug，一個 repo 常常是 Plan 用 openspec、bug 用 GitHub issues。
 
 ## Considered Options
 

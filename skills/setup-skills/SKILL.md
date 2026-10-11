@@ -22,7 +22,7 @@ Read whatever exists:
 - `openspec/` at the repo root, and whether `openspec --version` runs
 - whether `gh` or `glab` runs and is authenticated (`gh auth status`, `glab auth status`)
 - `AGENTS.md` and `CLAUDE.md` at the repo root, and any existing `## Agent skills` block in either
-- `.agents/plan-store.md`, `.agents/issue-tracker.md`, `.agents/worktree.md` — prior output of this skill (the rest of `.agents/`, such as `.agents/skills/`, belongs to other tools)
+- `.agents/workflow/plan-store.md`, `.agents/workflow/issue-tracker.md`, `.agents/workflow/worktree.md` — prior output of this skill (everything else under `.agents/` belongs to other tools)
 - worktree tooling: scripts or hooks whose name mentions `worktree` (e.g. `.claude/hooks/`, `scripts/`), a `WorktreeCreate` hook in `.claude/settings.json`, a `.worktreeinclude`
 
 ## 2. Ask, one section at a time
@@ -45,11 +45,11 @@ Show drafts of every file you will write and the `## Agent skills` block. Let th
 
 ## 4. Write
 
-Seed `.agents/` from the templates in this folder, filling in the repo-specific parts:
+Seed `.agents/workflow/` from the templates in this folder, filling in the repo-specific parts:
 
-- `.agents/plan-store.md` from [plan-store-openspec.md](./plan-store-openspec.md), [plan-store-github.md](./plan-store-github.md), or [plan-store-gitlab.md](./plan-store-gitlab.md)
-- `.agents/issue-tracker.md` from [issue-tracker-github.md](./issue-tracker-github.md) or [issue-tracker-gitlab.md](./issue-tracker-gitlab.md)
-- `.agents/worktree.md` from [worktree.md](./worktree.md) — only when section C ran and the user chose the repo's tooling
+- `.agents/workflow/plan-store.md` from [plan-store-openspec.md](./plan-store-openspec.md), [plan-store-github.md](./plan-store-github.md), or [plan-store-gitlab.md](./plan-store-gitlab.md)
+- `.agents/workflow/issue-tracker.md` from [issue-tracker-github.md](./issue-tracker-github.md) or [issue-tracker-gitlab.md](./issue-tracker-gitlab.md)
+- `.agents/workflow/worktree.md` from [worktree.md](./worktree.md) — only when section C ran and the user chose the repo's tooling
 
 The `## Agent skills` block goes in `AGENTS.md`, which every agent reads. If `AGENTS.md` is missing, create it. If `CLAUDE.md` exists and does not already import `AGENTS.md`, add an `@AGENTS.md` line to it. Update an existing block in place, leaving the surrounding sections untouched.
 
@@ -58,19 +58,21 @@ The `## Agent skills` block goes in `AGENTS.md`, which every agent reads. If `AG
 
 ### Plan store
 
-[one line: where Plans live]. See `.agents/plan-store.md`.
+[one line: where Plans live]. See `.agents/workflow/plan-store.md`.
 
 ### Issue tracker
 
-[one line: where bugs and requests live]. See `.agents/issue-tracker.md`.
+[one line: where bugs and requests live]. See `.agents/workflow/issue-tracker.md`.
 
 ### Worktree
 
-[one line: how worktrees are created]. See `.agents/worktree.md`.
+[one line: how worktrees are created]. See `.agents/workflow/worktree.md`.
 ```
 
-Include `### Worktree` only when `.agents/worktree.md` was written.
+Include `### Worktree` only when `.agents/workflow/worktree.md` was written.
 
 ## 5. Done
 
-Done when every file from step 4 exists and the block points at each of them. Tell the user which files were written, that the planning and implement skills now read them, and that `.agents/*.md` can be edited directly — re-run this skill only to switch a store or tracker.
+Done when every file from step 4 exists and the block points at each of them. Tell the user which files were written, that the planning and implement skills now read them, and that `.agents/workflow/*.md` can be edited directly — re-run this skill only to switch a store or tracker.
+
+Ask the user to commit `.agents/workflow/` along with the edited `AGENTS.md` / `CLAUDE.md`. Implement runs in a fresh worktree, which holds only committed files — uncommitted configuration is invisible there, and implement stops for missing setup.
